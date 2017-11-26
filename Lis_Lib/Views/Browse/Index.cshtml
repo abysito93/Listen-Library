@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Lis_Lib.Models.Audiobook>
+
+@{
+    ViewBag.Title = "Browse";
+}
+
+<h2>Browse Audiobooks</h2>
+
+@using (Html.BeginForm("Index", "Browse", FormMethod.Get))
+{
+        <p><b>Search:</b> @Html.TextBox("SearchItem")</p>
+        <p><b>Sort by:</b></p>
+        <p>
+            <b>Author:</b>
+            <b>ASC:</b> @Html.CheckBox(name: "checkAuthorAsc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>DESC:</b> @Html.CheckBox(name: "checkAuthorDesc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>|Publisher: </b>
+            <b>ASC:</b> @Html.CheckBox(name: "checkPublisherAsc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>DESC:</b> @Html.CheckBox(name: "checkPublisherDesc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>|Narrator:</b>
+            <b>ASC:</b> @Html.CheckBox(name: "checkNarratorAsc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>DESC:</b> @Html.CheckBox(name: "checkNarratorDesc", isChecked: false, htmlAttributes: new { @checked = true })
+        </p>
+        <p>
+            <b>Title: </b>
+            <b>ASC:</b> @Html.CheckBox(name: "checkTitleAsc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>DESC:</b> @Html.CheckBox(name: "checkTitleDesc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>|Price: </b> 
+            <b>ASC</b> @Html.CheckBox(name: "checkPriceAsc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>DESC</b> @Html.CheckBox(name: "checkPriceDesc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>|Date:</b>
+            <b>ASC</b> @Html.CheckBox(name: "checkDateAsc", isChecked: false, htmlAttributes: new { @checked = true })
+            <b>DESC</b> @Html.CheckBox(name: "checkDateDesc", isChecked: false, htmlAttributes: new { @checked = true })
+            <input type="submit" value="Filter" />  
+        </p>
+}
+
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action( actionName: "ViewItem", routeValues: new { id = item.Id })"><img src="@Url.Content(item.Image)" alt="Cover" style="width:200px; height:200px" /></a>
+            </td>
+            <td>
+                <p><b>@Html.ActionLink( linkText: item.Title, actionName: "ViewItem", routeValues: new { id = item.Id })</b></p>
+                <p><b>Author: </b>@Html.DisplayFor(modelItem => item.Author.Author1)</p>
+                <p><b>Narrator: </b> @Html.DisplayFor(modelItem => item.Narrator.Narrator1)</p>
+                <p><b>Publisher: </b>@Html.DisplayFor(modelItem => item.Publisher.Publisher1)</p>
+                <p><b>Release Date: </b>@Html.DisplayFor(modelItem => item.Release_date)</p>
+                <p><b>Price: </b> @Html.DisplayFor(modelItem => item.Price)</p>
+            </td>
+            <td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <input type="button" class="btn btn-primary btn-lg" value="Add to Cart" onclick="location.href='@Url.Action( actionName: "AddToCart", controllerName: "Carts", routeValues: new { id = item.Id })'" />
+                    <input type="button" class="btn btn-primary btn-lg" value="Buy" onclick="location.href='@Url.Action("Checkout", "Carts")'" />
+                }
+                else
+                {
+                    <input type="button" class="btn btn-primary btn-lg" value="Add to Cart" onclick="location.href='@Url.Action("Register", "Account")'" />
+                    <input type="button" class="btn btn-primary btn-lg" value="Buy" onclick="location.href='@Url.Action("Register", "Account")'" />
+                }
+            </td>
+        </tr>
+    }
+</table>

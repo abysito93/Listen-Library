@@ -1,0 +1,29 @@
+﻿@model Lis_Lib.Models.Audiobook
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>@Html.DisplayFor(model => model.Title)</h2>
+
+<div class="col-md-4">
+    <img src="@Url.Content(Model.Image)" style="width: 350px; height: 350px" />
+</div>
+<div class="col-md-8">
+    <p>@Html.DisplayFor(model => model.Description)</p>
+    <p><b>Author: </b>@Html.DisplayFor(model => model.Author.Author1)</p>
+    <p><b>Narrator: </b>@Html.DisplayFor(model => model.Narrator.Narrator1)</p>
+    <p><b>Publisher: </b>@Html.DisplayFor(model => model.Publisher.Publisher1)</p>
+    <p><b>Genre: </b>@Html.DisplayFor(model => model.Genre.Genre1)</p>
+    <p><b>Price: $@Html.DisplayFor(model => model.Price)</b></p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <input type="button" class="btn btn-primary btn-lg" value="Add to Cart" onclick="location.href='@Url.Action( actionName: "AddToCart", controllerName: "Carts", routeValues: new { id = Model.Id })'" />
+        <input type="button" class="btn btn-primary btn-lg" value="Buy" onclick="location.href='@Url.Action("Checkout", "Carts")'" />
+    }
+    else
+    {
+        <input type="button" class="btn btn-primary btn-lg" value="Add to Cart" onclick="location.href='@Url.Action("Register", "Account")'" />
+        <input type="button" class="btn btn-primary btn-lg" value="Buy" onclick="location.href='@Url.Action("Register", "Account")'" />
+    }
+</div>
+
