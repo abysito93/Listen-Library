@@ -20,6 +20,5 @@ namespace Lis_Lib.Models
         public string Cart_Id { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual Cart Cart { get; set; }
     }
 }

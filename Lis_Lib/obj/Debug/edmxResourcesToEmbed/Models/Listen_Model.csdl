@@ -9,7 +9,6 @@
     <Property Name="Order_date" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="Cart_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Order_ToAspNetUsers" FromRole="C_Order" ToRole="AspNetUsers" />
-    <NavigationProperty Name="Cart" Relationship="Self.FK__Order_ToCart" FromRole="C_Order" ToRole="Cart" />
   </EntityType>
   <EntityType Name="AspNetRole">
     <Key>
@@ -98,11 +97,11 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Item_Id" Type="Int32" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Date" Type="DateTime" Precision="0" />
     <Property Name="Total" Type="Decimal" Precision="8" Scale="2" />
-    <NavigationProperty Name="C_Order" Relationship="Self.FK__Order_ToCart" FromRole="Cart" ToRole="C_Order" />
+    <Property Name="Item_Id" Type="Int32" />
+    <Property Name="Cart_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Audiobook" Relationship="Self.FK_Cart_ToAudiobook" FromRole="Cart" ToRole="Audiobook" />
   </EntityType>
   <EntityType Name="Credit_Card">
@@ -160,18 +159,6 @@
       </Principal>
       <Dependent Role="C_Order">
         <PropertyRef Name="User_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Order_ToCart">
-    <End Role="Cart" Type="Self.Cart" Multiplicity="0..1" />
-    <End Role="C_Order" Type="Self.C_Order" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Cart">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="C_Order">
-        <PropertyRef Name="Cart_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -295,10 +282,6 @@
     <EntitySet Name="Tables" EntityType="Self.Table" />
     <AssociationSet Name="FK__Order_ToAspNetUsers" Association="Self.FK__Order_ToAspNetUsers">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-      <End Role="C_Order" EntitySet="C_Order" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Order_ToCart" Association="Self.FK__Order_ToCart">
-      <End Role="Cart" EntitySet="Carts" />
       <End Role="C_Order" EntitySet="C_Order" />
     </AssociationSet>
     <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">

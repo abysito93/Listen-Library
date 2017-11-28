@@ -55,9 +55,9 @@ namespace Lis_Lib.Controllers
                 db.Credit_Card.Add(credit_Card);
                 db.SaveChanges();
                 if (User.IsInRole("Administrator"))
-                    return RedirectToAction("Index");
+                    return RedirectToAction(actionName: "Index");
                 else
-                    return RedirectToAction("Index", "Manage", null);
+                    return RedirectToAction(actionName: "Index", controllerName: "Manage", routeValues: null);
             }
 
             ViewBag.User_Id = new SelectList(db.AspNetUsers, "Id", "Email", credit_Card.User_Id);
@@ -92,9 +92,9 @@ namespace Lis_Lib.Controllers
                 db.Entry(credit_Card).State = EntityState.Modified;
                 db.SaveChanges();
                 if (User.IsInRole("Administrator"))
-                    return RedirectToAction("Index");
+                    return RedirectToAction(actionName: "Index");
                 else
-                    return RedirectToAction("Index", "Manage", null);
+                    return RedirectToAction(actionName: "Index", controllerName: "Manage", routeValues: null);
             }
             ViewBag.User_Id = new SelectList(db.AspNetUsers, "Id", "Email", credit_Card.User_Id);
             return View(credit_Card);
@@ -124,9 +124,9 @@ namespace Lis_Lib.Controllers
             db.Credit_Card.Remove(credit_Card);
             db.SaveChanges();
             if (User.IsInRole("Administrator"))
-                return RedirectToAction("Index");
+                return RedirectToAction(actionName: "Index");
             else
-                return RedirectToAction("Index", "Manage", null);
+                return RedirectToAction(actionName: "Index", controllerName: "Manage", routeValues: null);
         }
 
         protected override void Dispose(bool disposing)

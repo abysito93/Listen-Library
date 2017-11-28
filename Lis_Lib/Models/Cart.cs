@@ -9,24 +9,135 @@
 
 namespace Lis_Lib.Models
 {
+    using Microsoft.AspNet.Identity;
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+
     public partial class Cart
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Cart()
-        {
-            this.C_Order = new HashSet<C_Order>();
-        }
-    
-        public string Id { get; set; }
-        public Nullable<int> Item_Id { get; set; }
+        public int Id { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<decimal> Total { get; set; }
+        [Key]public Nullable<int> Item_Id { get; set; }
+        public string Cart_Id { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C_Order> C_Order { get; set; }
         public virtual Audiobook Audiobook { get; set; }
+
+        Listen_Entities db = new Listen_Entities();
+        string ShoppingCartId { get; set; }
+        public const string CartSessionKey = "CartId";
+
+        public static Cart GetCart(HttpContextBase context)
+        {
+            var cart = new Cart();
+            cart.ShoppingCartId = GetCartId(context);
+            return cart;
+        }
+
+        // Helper method to simplify shopping cart calls
+        public static Cart GetCart(Controller controller)
+        {
+            return GetCart(controller.HttpContext);
+        }
+
+        public void Add(Audiobook audiobook)
+        {
+
+            // Get items in the cart
+            var cartItem = db.Carts.SingleOrDefault(
+                c => c.Cart_Id == ShoppingCartId
+                && c.Item_Id == audiobook.Id);
+
+            if (cartItem == null)
+            {
+                // Create a new item if no item exist in the cart.
+                cartItem = new Cart
+                {
+                    Item_Id = audiobook.Id,
+                    Cart_Id = ShoppingCartId
+                };
+                db.Carts.Add(cartItem);
+            }
+            db.SaveChanges();
+        }
+
+        public void Remove(Audiobook audiobook)
+        {
+
+            var cartItem = db.Carts.Single(
+                c => c.Cart_Id == ShoppingCartId
+                && c.Item_Id == audiobook.Id);
+
+            if (cartItem != null)
+            {
+                db.Carts.Remove(cartItem);
+            }
+            db.SaveChanges();
+        }
+
+        public void EmptyCart()
+        {
+            var cartItems = db.Carts.Where(
+                c => c.Cart_Id == ShoppingCartId);
+
+            foreach (var item in cartItems)
+            {
+                db.Carts.Remove(item);
+            }
+
+            db.SaveChanges();
+        }
+
+        public List<Cart> GetCartItems()
+        {
+            return db.Carts.Where(
+                cartItems => cartItems.Cart_Id == ShoppingCartId).ToList();
+        }
+
+        public decimal GetTotal()
+        {
+            decimal? total = (from cartItems in db.Carts
+                              where cartItems.Cart_Id == ShoppingCartId
+                              select (int?)cartItems.Audiobook.Price).Sum();
+
+            return total ?? decimal.Zero;
+        }
+
+        public static string GetCartId(HttpContextBase context)
+        {
+            if (context.Session[CartSessionKey] == null)
+            {
+                if (!string.IsNullOrWhiteSpace(context.User.Identity.GetUserId()))
+                {
+                    // Set cart id to the user Id
+                    context.Session[CartSessionKey] = context.User.Identity.GetUserId();
+                }
+                else
+                {
+                    //Generate random Guid using System.Guid
+                    Guid tempCartId = Guid.NewGuid();
+                    //Send tempCartId back to client as cookie
+                    context.Session[CartSessionKey] = tempCartId.ToString();
+                }
+            }
+            return context.Session[CartSessionKey].ToString();
+        }
+
+        public void MigrateCart(string User_Id)
+        {
+            var shoppingCart = db.Carts.Where(
+                c => c.Cart_Id == ShoppingCartId);
+
+            foreach (Cart item in shoppingCart)
+            {
+                item.Cart_Id = User_Id;
+            }
+            db.SaveChanges();
+        }
     }
 }

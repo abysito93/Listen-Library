@@ -17,5 +17,10 @@ namespace Lis_Lib
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Session_Start(Object sender, EventArgs e)
+        {
+            Session["init"] = 0;
+        }
     }
 }

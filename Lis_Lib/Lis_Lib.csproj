@@ -198,6 +198,7 @@
     <Compile Include="Controllers\AuthorsController.cs" />
     <Compile Include="Controllers\BrowseController.cs" />
     <Compile Include="Controllers\CartsController.cs" />
+    <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\Credit_CardController.cs" />
     <Compile Include="Controllers\C_OrderController.cs" />
     <Compile Include="Controllers\GenresController.cs" />
@@ -262,6 +263,8 @@
     <Compile Include="Models\Publisher.cs">
       <DependentUpon>Listen_Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ShoppingCartRemoveViewModel.cs" />
+    <Compile Include="Models\ShoppingCartViewModel.cs" />
     <Compile Include="Models\Table.cs">
       <DependentUpon>Listen_Model.tt</DependentUpon>
     </Compile>
@@ -280,6 +283,11 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <EntityDeploy Include="Models\Listen_Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Listen_Model.Designer.cs</LastGenOutput>
@@ -287,11 +295,6 @@
     <Content Include="Models\Listen_Model.edmx.diagram">
       <DependentUpon>Listen_Model.edmx</DependentUpon>
     </Content>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Models\Listen_Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -394,6 +397,8 @@
     <Content Include="Views\Credit_Card\Edit.cshtml" />
     <Content Include="Views\Credit_Card\Index.cshtml" />
     <Content Include="Views\Carts\Index.cshtml" />
+    <Content Include="Views\Checkout\Payment.cshtml" />
+    <Content Include="Views\Checkout\Complete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

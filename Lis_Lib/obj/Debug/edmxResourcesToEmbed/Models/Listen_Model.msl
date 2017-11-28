@@ -88,9 +88,10 @@
       <EntityTypeMapping TypeName="Model.Cart">
         <MappingFragment StoreEntitySet="Cart">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Item_Id" ColumnName="Item_Id" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="Item_Id" ColumnName="Item_Id" />
+          <ScalarProperty Name="Cart_Id" ColumnName="Cart_Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

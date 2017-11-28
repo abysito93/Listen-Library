@@ -1,0 +1,10 @@
+﻿@model Lis_Lib.Models.C_Order
+
+@{
+    ViewBag.Title = "Complete";
+}
+
+<h2>Complete</h2>
+<p>Thanks for your order! Your order number is: @Model.Id</p>
+<p>Click @Html.ActionLink(linkText: "here", actionName: "Index", controllerName: "Browse", routeValues: null, htmlAttributes: null) to continue shopping!</p>
+

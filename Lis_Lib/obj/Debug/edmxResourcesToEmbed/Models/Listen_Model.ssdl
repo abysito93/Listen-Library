@@ -90,10 +90,11 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="Item_Id" Type="int" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Date" Type="date" />
     <Property Name="Total" Type="decimal" Precision="8" Scale="2" />
+    <Property Name="Item_Id" Type="int" />
+    <Property Name="Cart_Id" Type="nvarchar" MaxLength="128" />
   </EntityType>
   <EntityType Name="Credit_Card">
     <Key>
@@ -149,18 +150,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Order_ToCart">
-    <End Role="Cart" Type="Self.Cart" Multiplicity="0..1" />
-    <End Role="_Order" Type="Self._Order" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Cart">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="_Order">
-        <PropertyRef Name="Cart_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK__Order_ToCart' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK__Order_ToCart" />-->
   <Association Name="FK_Audiobook_ToAuthor">
     <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
     <End Role="Audiobook" Type="Self.Audiobook" Multiplicity="*" />
@@ -306,10 +298,6 @@
     <EntitySet Name="Table" EntityType="Self.Table" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__Order_ToAspNetUsers" Association="Self.FK__Order_ToAspNetUsers">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-      <End Role="_Order" EntitySet="_Order" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Order_ToCart" Association="Self.FK__Order_ToCart">
-      <End Role="Cart" EntitySet="Cart" />
       <End Role="_Order" EntitySet="_Order" />
     </AssociationSet>
     <AssociationSet Name="FK_Audiobook_ToAuthor" Association="Self.FK_Audiobook_ToAuthor">

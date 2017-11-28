@@ -95,10 +95,11 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Item_Id" Type="int" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Date" Type="date" />
           <Property Name="Total" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Item_Id" Type="int" />
+          <Property Name="Cart_Id" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="Credit_Card">
           <Key>
@@ -154,18 +155,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Order_ToCart">
-          <End Role="Cart" Type="Self.Cart" Multiplicity="0..1" />
-          <End Role="_Order" Type="Self._Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cart">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="_Order">
-              <PropertyRef Name="Cart_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK__Order_ToCart' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK__Order_ToCart" />-->
         <Association Name="FK_Audiobook_ToAuthor">
           <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
           <End Role="Audiobook" Type="Self.Audiobook" Multiplicity="*" />
@@ -313,10 +305,6 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="_Order" EntitySet="_Order" />
           </AssociationSet>
-          <AssociationSet Name="FK__Order_ToCart" Association="Self.FK__Order_ToCart">
-            <End Role="Cart" EntitySet="Cart" />
-            <End Role="_Order" EntitySet="_Order" />
-          </AssociationSet>
           <AssociationSet Name="FK_Audiobook_ToAuthor" Association="Self.FK_Audiobook_ToAuthor">
             <End Role="Author" EntitySet="Author" />
             <End Role="Audiobook" EntitySet="Audiobook" />
@@ -372,7 +360,6 @@
           <Property Name="Order_date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Cart_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Order_ToAspNetUsers" FromRole="C_Order" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Cart" Relationship="Self.FK__Order_ToCart" FromRole="C_Order" ToRole="Cart" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -461,11 +448,11 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Item_Id" Type="Int32" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Date" Type="DateTime" Precision="0" />
           <Property Name="Total" Type="Decimal" Precision="8" Scale="2" />
-          <NavigationProperty Name="C_Order" Relationship="Self.FK__Order_ToCart" FromRole="Cart" ToRole="C_Order" />
+          <Property Name="Item_Id" Type="Int32" />
+          <Property Name="Cart_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Audiobook" Relationship="Self.FK_Cart_ToAudiobook" FromRole="Cart" ToRole="Audiobook" />
         </EntityType>
         <EntityType Name="Credit_Card">
@@ -523,18 +510,6 @@
             </Principal>
             <Dependent Role="C_Order">
               <PropertyRef Name="User_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Order_ToCart">
-          <End Role="Cart" Type="Self.Cart" Multiplicity="0..1" />
-          <End Role="C_Order" Type="Self.C_Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cart">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="C_Order">
-              <PropertyRef Name="Cart_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -658,10 +633,6 @@
           <EntitySet Name="Tables" EntityType="Self.Table" />
           <AssociationSet Name="FK__Order_ToAspNetUsers" Association="Self.FK__Order_ToAspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="C_Order" EntitySet="C_Order" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Order_ToCart" Association="Self.FK__Order_ToCart">
-            <End Role="Cart" EntitySet="Carts" />
             <End Role="C_Order" EntitySet="C_Order" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -794,9 +765,10 @@
             <EntityTypeMapping TypeName="Model.Cart">
               <MappingFragment StoreEntitySet="Cart">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Item_Id" ColumnName="Item_Id" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Item_Id" ColumnName="Item_Id" />
+                <ScalarProperty Name="Cart_Id" ColumnName="Cart_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
